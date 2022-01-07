@@ -1,1 +1,518 @@
 
+// ConsoleApplication5.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+//
+
+#include <iostream>
+#include<list>
+#include<string>
+#include <fstream>
+#include <sstream>
+using namespace std;
+class Person
+{
+public:
+    Person();
+    virtual void print();
+    string getName();
+    void  setName(string name);
+    string getSex();
+    void setSex(string sex);
+private:
+    string m_name;
+    string m_sex;
+};
+void  Person::print()
+{
+    cout << "姓名：" << m_name << endl;
+    cout << "性别：" << m_sex << endl;
+}
+Person::Person()
+{
+    m_name = "";
+    m_sex = "";
+}
+string Person::getName()
+{
+    return m_name;
+}
+void   Person::setName(string name)
+{
+    m_name = name;
+}
+string Person::getSex()
+{
+    return m_sex;
+}
+void   Person::setSex(string sex)
+{
+    m_sex = sex;
+}
+class Student :public Person
+{
+public:
+    bool operator==(Student& stu);
+    Student();
+    void print();
+    string getNum();
+    void setNum(string num);
+private:
+    string m_num;
+};
+bool Student:: operator==(Student& stu)
+{
+    if (this->getName() == stu.getName() && this->getNum() == stu.getNum() && this->getSex() == stu.getSex())
+        return true;
+    else
+        return false;
+}
+void Student::print()
+{
+    cout << "姓名：" <<getName() << endl;
+    cout << "性别：" << getSex() << endl;
+    cout << "学号：" << m_num << endl;
+}
+string Student::getNum()
+{
+    return m_num;
+}
+void Student::setNum(string num)
+{
+    m_num = num;
+}
+Student::Student()
+{
+    m_num = "";
+}
+class Book
+{
+public:
+    void print();
+    Book();
+    string getName();
+    void  setName(string name);
+    string getNum();
+    void  setNum(string num);
+    string getAthor();
+    void  setAthor(string athor);
+    double getPrice();
+    void setPrice(double price);
+    bool getStatus();
+    void setStatus(bool status);
+    string getBrrowName();
+    void  setBrrowName(string name);
+    string getBrrowNum();
+    void  setBrrowNum(string name);
+    string getBrrowSex();
+    void  setBrrowSex(string name);
+private:
+    string m_name;
+    string m_num;
+    double m_price;
+    string m_athor;
+    bool m_status; //true 存在     false 不存在
+
+private:
+    string m_brrowName;
+    string m_brrowNum;
+    string m_brrowSex;
+};
+void Book::setBrrowName(string name)
+{
+    m_brrowName = name;
+}
+string Book::getBrrowName()
+{
+    return m_brrowName;
+}
+void Book::setBrrowNum(string name)
+{
+    m_brrowNum = name;
+}
+string Book::getBrrowNum()
+{
+    return m_brrowNum;
+}
+void Book::setBrrowSex(string name)
+{
+    m_brrowSex = name;
+}
+string Book::getBrrowSex()
+{
+    return m_brrowSex;
+}
+
+void Book::print()
+{
+    cout << "书名：" << m_name << endl;
+    cout << "编号：" << m_num << endl;
+    cout << "作者：" << m_athor << endl;
+    cout << "价格：" << m_price << endl;
+    if (m_status)
+    {
+        cout << "该书存在" << endl;
+    }
+    else
+    {
+        cout << "该书不存在" << endl;
+    }
+}
+Book::Book()
+{
+    m_name = "";
+    m_num = "";
+    m_athor = "";
+    m_price = 0;
+    m_status = false;
+    m_brrowName = "";
+    m_brrowNum = "";
+    m_brrowSex = "";
+}
+string Book::getName()
+{
+    return m_name;
+}
+void   Book::setName(string name)
+{
+    m_name = name;
+}
+string Book::getNum()
+{
+    return m_num;
+}
+void Book::setNum(string num)
+{
+    m_num = num;
+}
+string Book::getAthor()
+{
+    return m_athor;
+}
+void   Book::setAthor(string athor)
+{
+    m_athor = athor;
+}
+double Book::getPrice()
+{
+    return m_price;
+}
+void Book::setPrice(double price)
+{
+    m_price = price;
+}
+bool Book::getStatus()
+{
+    return m_status;
+}
+void Book::setStatus(bool status)
+{
+    m_status = status;
+}
+class Manager:public Person
+{
+public:
+    Manager();
+    ~Manager();
+    Student* getVIP();
+    int getNum();
+    void setNum(int num);
+    bool searchVIP(Student& stu);
+    void RegesiterVIP(Student &stu);//注册会员
+private:
+    int m_num;//当前会员人数
+    int m_max;//最大会员
+    Student* m_VIP;
+};
+void Manager::setNum(int num)
+{
+    m_num = num;
+}
+Student* Manager:: getVIP()
+{
+    return m_VIP;
+}
+int  Manager::getNum()
+{
+    return m_num;
+}
+bool Manager::searchVIP(Student& stu)
+{
+    for (int i = 0; i < m_num; i++)
+    {
+        if (m_VIP[i] == stu)
+        {
+            return true;
+        }
+   }
+    return false;
+}
+Manager::Manager()
+{
+    m_max = 100;
+    m_num = 0;
+    m_VIP = new Student[m_max];
+}
+Manager::~Manager()
+{
+    delete[]m_VIP;
+}
+void Manager::RegesiterVIP(Student& stu)
+{
+    if (m_num > m_max)
+    {
+        cout << "超过最大人数" << endl;
+        exit(1);
+    }
+    else
+    {
+        m_VIP[m_num++] = stu;
+        cout << "注册成功" << endl;
+    }
+}
+list<Book>BOOK;
+void menu(Manager &manager);
+void InputBook()
+{
+    Book book;
+    string name;
+    string num;
+    string athor;
+    double price;
+    cout << "请输入书名" << endl;
+    cin >> name;
+    book.setName(name);
+    cout << "请输入编号" << endl;
+    cin >> num;
+    book.setNum(num);
+    cout << "请输入作者" << endl;
+    cin >> athor;
+    book.setAthor(athor);
+    cout << "请输入j价格" << endl;
+    cin >> price;
+    book.setPrice(price);
+    book.setStatus(true);
+    BOOK.push_back(book);
+    cout << "导入成功" << endl;
+}
+void SearchBook()
+{
+    string num;
+    cout << "请输入编号" << endl;
+    cin >> num;
+    for (list<Book>::iterator iter = BOOK.begin(); iter != BOOK.end(); iter++)
+    {
+        if ((*iter).getNum() == num&& (*iter).getStatus())
+        {
+            (*iter).print();
+            break;
+        }
+    }
+}
+void borrowBook(Student &stu)
+{
+    SearchBook();
+    string num;
+    cin >> num;
+    for (list<Book>::iterator iter = BOOK.begin(); iter != BOOK.end(); iter++)
+    {
+        if ((*iter).getNum() == num&& (*iter).getStatus())
+        {
+            (*iter).setStatus(false);
+            (*iter).setBrrowName(stu.getName());
+            (*iter).setBrrowNum(stu.getNum());
+            (*iter).setBrrowSex(stu.getSex());
+            cout << "结束成功" << endl;
+            break;
+        }
+    }
+}
+void borrowEntr(Manager &manager)
+{
+   
+    Student stu;
+    string name;
+    cout << "请输入借书人姓名:" << endl;
+    cin >> name;
+    stu.setName(name);
+    string num;
+    cout << "请输入借书人学号:" << endl;
+    cin >> num;
+    stu.setNum(num);
+    string sex;
+    cout << "请输入借书人性别:" << endl;
+    cin >> sex;
+    stu.setSex(sex);
+    if (manager.searchVIP(stu))
+    {
+        borrowBook(stu);
+    }
+    else
+    {
+        cout << "非会员不能借书" << endl;
+        system("pause");
+        menu(manager);
+    }
+}
+void returnBook()
+{
+    string num;
+    cout << "请输入书的编号" << endl;
+    cin >> num;
+    for (list<Book>::iterator iter = BOOK.begin(); iter != BOOK.end(); iter++)
+    {
+        if ((*iter).getNum() == num )
+        {
+            (*iter).setStatus(true);
+            (*iter).setBrrowName("");
+            (*iter).setBrrowNum("");
+            (*iter).setBrrowSex("");
+            cout << "还书成功" << endl;
+            break;
+        }
+    }
+}
+void regester(Manager &manager)
+{
+    Student stu;
+    string name;
+    string num;
+    string sex;
+    cout << "请输入姓名" << endl;
+    cin >> name;
+    stu.setName(name);
+    cout << "请输入学号" << endl;
+    cin >> num;
+    stu.setNum(num);
+    cout << "请输入性别" << endl;
+    cin >> sex;
+    stu.setSex(sex);
+    manager.RegesiterVIP(stu);
+}
+void saveFile(Manager& manager)
+{
+    ofstream outFileStu;
+    outFileStu.open("Book.csv", ios::out); // 打开模式可省略
+    outFileStu << "书名" << ',' << "书编号" << ',' << "作者" << ',' << "价格" << ',' << "状态" << ',' << "借书人学号" << ',' << "借书人姓名" << ',' << "借书人性别" << endl;
+    for (list<Book>::iterator iter = BOOK.begin(); iter != BOOK.end(); iter++)
+    {
+        outFileStu << (*iter).getName() << ',' << (*iter).getNum() << ',' << (*iter).getAthor() << ',' << (*iter).getPrice() << ',' << (*iter).getStatus() << ',' << (*iter).getBrrowNum()  << ',' << (*iter).getBrrowName() << ',' << (*iter).getBrrowSex() << endl;
+    }
+    outFileStu.close();
+    ofstream outFileTea;
+    outFileTea.open("VIP.csv", ios::out); // 打开模式可省略
+    outFileTea << "学号 " << ',' << "姓名" << ',' << "性别"  << endl;
+    for (int i=0;i< manager.getNum();i++)
+    {
+        outFileTea << manager.getVIP()[i].getNum() << ',' << manager.getVIP()[i].getName()  << manager.getVIP()[i].getSex() << endl;
+    }
+    outFileTea.close();
+}
+void readFile(Manager& manager)
+{
+
+    //加载图书
+    BOOK.clear();
+    ifstream inFileStu("Book.csv", ios::in);
+    string lineStr;
+    getline(inFileStu, lineStr);//不读取第一行
+    while (getline(inFileStu, lineStr))
+    {
+        Book book;
+        stringstream ss(lineStr);
+        string str;
+        getline(ss, str, ',');
+        book.setName(str);
+        getline(ss, str, ',');
+        book.setNum(str);
+        getline(ss, str, ',');
+        book.setAthor(str);
+        getline(ss, str, ',');
+        book.setPrice(stoi(str.c_str()));
+        getline(ss, str, ',');
+        book.setStatus(stoi(str.c_str()));
+        getline(ss, str, ',');
+        book.setBrrowNum(str);
+        getline(ss, str, ',');
+        book.setBrrowName(str);
+        getline(ss, str, ',');
+        book.setBrrowSex(str);
+        BOOK.push_back(book);
+    }
+    inFileStu.close();
+    //加载会员
+    ifstream inFileVIP("VIP.csv", ios::in);
+    string line;
+    getline(inFileStu, line);//不读取第一行
+    manager.setNum(0);
+    while (getline(inFileStu, line))
+    {
+        Student stu;
+        stringstream ss(line);
+        string str;
+        getline(ss, str, ',');
+        stu.setNum(str);
+        getline(ss, str, ',');
+        stu.setName(str);
+        getline(ss, str, ',');
+        stu.setSex(str);
+        manager.RegesiterVIP(stu);
+    }
+    inFileVIP.close();
+}
+void menu(Manager &manager)
+{
+   
+    while (1)
+    {
+        int chioce = 0;
+        cout << "1.录入图书" << endl;
+        cout << "2.查询图书" << endl;
+        cout << "3.借书" << endl;
+        cout << "4.还书" << endl;
+        cout << "5.注册会员" << endl;
+        cout << "0.退出系统" << endl;
+        cout << "请输入你的选择" << endl;
+        cin >> chioce;
+        switch (chioce)
+        {
+        case 1:
+            InputBook();
+            break;
+        case 2:
+            SearchBook();
+            break;
+        case 3:
+            borrowEntr(manager);
+            break;
+        case 4:
+            returnBook();
+            break;
+        case 5:
+            regester(manager);
+            break;
+        case 0:
+            saveFile(manager);
+            exit(1);
+            break;
+        default:
+            menu(manager);
+            break;
+        }
+    }
+}
+int main()
+{
+    Manager manager;
+    readFile(manager);
+    menu(manager);
+}
+
+// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
+// 调试程序: F5 或调试 >“开始调试”菜单
+
+// 入门使用技巧: 
+//   1. 使用解决方案资源管理器窗口添加/管理文件
+//   2. 使用团队资源管理器窗口连接到源代码管理
+//   3. 使用输出窗口查看生成输出和其他消息
+//   4. 使用错误列表窗口查看错误
+//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
+//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
